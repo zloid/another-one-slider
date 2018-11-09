@@ -7,97 +7,132 @@
     <title>just slider</title>
 
     <style>
-        body {font-family: Arial; background: #111;}
+        body, #switch {font-family: Arial; background: #111; color: #fff;}
 
         .slider-img {position: absolute; opacity: 0; transition: 1s ease-out; height: 30%; width: 20%; border-radius: 20px; } 
 
         .slider-img2 {position: absolute; opacity: 1; transition: 1.5s ease-in;  height: 30%; width: 20%; border-radius: 20px; display: block;  background-color: #f4ecd4;}   
 
-        #slider-div {margin: 20px 0 0 40%;}
+        #slider-div, #switch {margin: 20px 0 0 40%; font-size: 18px;}
 
         @media only screen and (max-width: 600px) {
          
             .slider-img {height: 40%; width: 70%;}
             .slider-img2 {height: 40%; width: 70%;}
-            #slider-div {margin: 10px 0 0 13%;}
+            #slider-div, #switch {margin: 10px 0 0 13%; font-size: 25px;}
         }
 
     </style>
 </head>
+
 <body>
-
-    <h2><u>slider</u></h2>
-
+    <h2><u>simple slider</u></h2>
+    
+    <button id="switch">show me random</button>
+    
     <div id="slider-div">
-        <img class="slider-img slider-img2" src="https://static.boredpanda.com/blog/wp-content/uploads/2016/02/big-cute-eyes-cat-black-scottish-fold-gimo-1room1cat-48.jpg" alt="img of a cat>
-        <img class="slider-img" src="https://i.pinimg.com/originals/d0/5f/93/d05f93286fe4e574c72b1a7435570f27.jpg" alt="img of a cat>
-        <img class="slider-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrTjYKrVG0362MCAjHNEvgLKl1qp4kemJ5RR5e893fEiH6t3uRrg" alt="img of a cat>
-        <img class="slider-img" src="https://www.europetnet.com/images/catbreeds/121.jpg" alt="img of a cat">
+        
+        <img class="slider-img slider-img2" src="https://static.boredpanda.com/blog/wp-content/uploads/2016/02/big-cute-eyes-cat-black-scottish-fold-gimo-1room1cat-48.jpg" alt="">
+        <img class="slider-img" src="https://i.pinimg.com/originals/d0/5f/93/d05f93286fe4e574c72b1a7435570f27.jpg">
+        <img class="slider-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrTjYKrVG0362MCAjHNEvgLKl1qp4kemJ5RR5e893fEiH6t3uRrg" alt="">
+        <img class="slider-img" src="https://www.europetnet.com/images/catbreeds/121.jpg" alt="">
     </div>
- 
+    
+
     <script>
 
+        let switchOnOf = false;
+
+        let getButton = document.querySelector('#switch');
+
         let allImgOfCats = document.querySelectorAll('.slider-img');
+        
+        let someInterval;
+
+        getButton.addEventListener('click', () => {
+            switchOnOf ? switchOnOf = false : switchOnOf = true;
+            console.log('switchOnOf:', switchOnOf);
+
+            if (!switchOnOf) {
+                getButton.innerHTML = 'show me random';
                 
-        //main logic 
-        let startCounter = 0;
+                //ordered analog of this slider
+                //main logic 
+                let startCounter = 0;
 
-        setInterval(() => {
-            //1 step: hide all img
-            for (let i = 0; i < allImgOfCats.length; i++) {
-                allImgOfCats[i].className = 'slider-img';                     
+                clearInterval(someInterval);
+
+                someInterval = setInterval(() => {
+                    //1 step: hide all img
+                    for (let i = 0; i < allImgOfCats.length; i++) {
+                        allImgOfCats[i].className = 'slider-img';                     
+                    }
+
+                    //2 step: counter manipulation for loop
+                    if (startCounter > allImgOfCats.length - 1) {
+                        startCounter = 0;
+                    }                      
+
+                    //3 step: show 1 img
+                    allImgOfCats[startCounter].className = 'slider-img2';
+
+                    //4 step: counter manipulation
+                    startCounter++;
+
+                }, 2000)
+
+            } else {
+
+                getButton.innerHTML = 'show me order';     
+                                    
+                //random analog of this slider
+                //main logic 
+                let  i;
+                let  b = 0;
+
+                clearInterval(someInterval);
+
+                someInterval = setInterval(() => {
+
+                    //1 step: create random counter
+                    i = Math.floor(Math.random() * allImgOfCats.length)
+
+                    //1 step: counter manipulation (each loop step with a different img)
+                    if ((i == b) && (i != (allImgOfCats.length - 1))) {
+                    
+                        i++
+
+                    } else if ((i == b) && (i == (allImgOfCats.length - 1))) {
+
+                         i--
+                    }
+                
+                    for (let i = 0; i < allImgOfCats.length; i++) {
+                        allImgOfCats[i].className = 'slider-img';
+                    }
+
+                    allImgOfCats[i].className = 'slider-img2';
+                
+                    console.log('ending i:', i);
+                
+                    b = i;
+                
+                }, 2000)
+                
             }
-            
-            //2 step: counter manipulation for loop
-            if (startCounter > allImgOfCats.length - 1) {
-                startCounter = 0;
-            }                      
-                        
-            //3 step: show 1 img
-            allImgOfCats[startCounter].className = 'slider-img2';
-            
-            //4 step: counter manipulation
-            startCounter++;
-            
-        }, 2000)
+        })
 
-
-/*
-    //random analog of this slider
-
-    //main logic 
-    let  i;
-    let  b = 0;
-
-    setInterval(() => {
         
-        //1 step: create random counter
-        i = Math.floor(Math.random() * allImgOfCats.length)
         
-        //1 step: counter manipulation (each loop step with a different img)
-        if ((i == b) && (i != (allImgOfCats.length - 1))) {
 
-            i++
-            
-        } else if ((i == b) && (i == (allImgOfCats.length - 1))) {
-                 
-             i--
-        }
+        
  
-        for (let i = 0; i < allImgOfCats.length; i++) {
-            allImgOfCats[i].className = 'slider-img';
-        }
-        
-        allImgOfCats[i].className = 'slider-img2';
 
-        console.log('ending i:', i);
 
-        b = i;
- 
-    }, 2000)
-
-*/
     
     </script>
+
+
+ <!-- (c) Sergey Voytehovich -->
 </body>
 </html>
