@@ -97,7 +97,7 @@
                     //1 step: create random counter
                     i = Math.floor(Math.random() * allImgOfCats.length)
 
-                    //1 step: counter manipulation (each loop step with a different img)
+                    //2 step: counter manipulation (each loop step with a different img)
                     if ((i == b) && (i != (allImgOfCats.length - 1))) {
                     
                         i++
@@ -106,32 +106,26 @@
 
                          i--
                     }
-                
+
+                    //3 step: hide all img
                     for (let i = 0; i < allImgOfCats.length; i++) {
                         allImgOfCats[i].className = 'slider-img';
                     }
 
+                    //4 step: show 1 img
                     allImgOfCats[i].className = 'slider-img2';
                 
-                    console.log('ending i:', i);
-                
+                    console.log('ending counter:', i);
+                    
+                    //5 step: add new counter for cpmpare
                     b = i;
                 
                 }, 2000)
                 
             }
         })
-
-        
-        
-
-        
- 
-
-
     
     </script>
-
 
  <!-- (c) Sergey Voytehovich -->
 </body>
